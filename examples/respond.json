@@ -1,0 +1,492 @@
+{
+  "aggregations": {
+    "CONFIG_FILE_ID": {
+      "buckets": [
+        {
+          "key": "project-a__module-json__service-json__ansible-json__v1_0_1__-opt-config-json",
+          "1": {
+            "value": 2
+          },
+          "TIMESTAMP": {
+            "buckets": [
+              {
+                "key": 161100000000,
+                "KEY": {
+                  "buckets": [
+                    {
+                      "key": "_id",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "5fb764d6a0b9fb005b26ac08",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "address",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "663 Trucklemans Lane, Hillsboro, New York, 6375",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "age",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "33",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "float32",
+                                  "1": {
+                                    "value": 1
+                                  },
+                                  "MIN": {
+                                    "value": 1000.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                },
+                                {
+                                  "key": "float64",
+                                  "1": {
+                                    "value": 1
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "balance",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "$1,319.38",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "company",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "MAGNEMO",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "email",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "carolineharmon@magnemo.com",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "eyeColor",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "green",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "favoriteFruit",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "strawberry",
+                            "1": {
+                              "value": 1
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 1
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1.0
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "key": "orange",
+                            "1": {
+                              "value": 1
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 1
+                                  },
+                                  "MIN": {
+                                    "value": 1000.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "key": "project-a__module-component-primary__service__ansible-component__1-1-1__component-conf",
+          "1": {
+            "value": 2
+          },
+          "TIMESTAMP": {
+            "buckets": [
+              {
+                "key": 161100000001,
+                "KEY": {
+                  "buckets": [
+                    {
+                      "key": "activerehashing yes",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "activerehashing yes",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "aof-rewrite-incremental-fsync yes",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "aof-rewrite-incremental-fsync yes",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "mergefilepath",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "mergefilepath",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "mergefsync everysec",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "mergefsync everysec",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "key": "mergeonly yes",
+                      "1": {
+                        "value": 2
+                      },
+                      "VALUE": {
+                        "buckets": [
+                          {
+                            "key": "mergeonly yes",
+                            "1": {
+                              "value": 2
+                            },
+                            "TYPE": {
+                              "buckets": [
+                                {
+                                  "key": "string",
+                                  "1": {
+                                    "value": 2
+                                  },
+                                  "MIN": {
+                                    "value": 1.0
+                                  },
+                                  "MAX": {
+                                    "value": 1000.0
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  }
+}
