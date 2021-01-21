@@ -22,6 +22,13 @@ var (
 )
 
 var (
+	cochGauge   = &prometheus.GaugeVec{}
+	cochInvalid = prometheus.NewGauge(prometheus.GaugeOpts{})
+)
+
+func init() {
+	flag.Parse()
+
 	cochGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "conformance_checker_gauge",
 		Help: "Conformance Checker Gauge",
@@ -30,9 +37,7 @@ var (
 		Name: "conformance_checker_invalid_config_file_id_gauge",
 		Help: "Conformance Checker Invalid Config File ID Gauge",
 	})
-)
 
-func init() {
 	// Register the summary and the histogram with Prometheus's default registry.
 	prometheus.MustRegister(cochGauge)
 	prometheus.MustRegister(cochInvalid)
@@ -50,7 +55,6 @@ func recordMetric(duration int, fn func()) {
 }
 
 func main() {
-	flag.Parse()
 	recordMetric(*interval, collect)
 	http.Handle("/metrics", promhttp.Handler())
 	log.Fatal(http.ListenAndServe(*addr, nil))
