@@ -8,7 +8,6 @@ import (
 	"main/pkg/client"
 	"main/pkg/metric"
 	"net/http"
-	"path/filepath"
 	"strings"
 	"time"
 )
@@ -58,8 +57,8 @@ func main() {
 }
 
 func collect() {
-	absPath, _ := filepath.Abs("./pkg/client/request_body.json")
-	c := client.ClientElasticsearch{RequestBodyAbsPath: absPath, SourceURL: *sourceURL}
+	reqBody := []byte(`{"aggs":{"CONFIG_FILE_ID":{"terms":{"field":"config_file_id.keyword","order":{"1":"desc"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"TIMESTAMP":{"terms":{"field":"timestamp","order":{"_key":"desc"},"size":1},"aggs":{"KEY":{"terms":{"field":"key.keyword","order":{"1":"desc"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"VALUE":{"terms":{"field":"value.keyword","order":{"1":"desc"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"TYPE":{"terms":{"field":"type.keyword","order":{"1":"desc"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"MAX":{"max":{"field":"metric"}},"MIN":{"min":{"field":"metric"}}}}}}}}}}}}},"size":0,"_source":{"excludes":[]},"stored_fields":["*"],"script_fields":{},"docvalue_fields":[{"field":"@timestamp","format":"date_time"},{"field":"timestamp","format":"date_time"}],"query":{"bool":{"must":[],"filter":[{"match_all":{}},{"range":{"@timestamp":{"gte":"now-8m","lte":"now"}}}],"should":[],"must_not":[]}}}`)
+	c := client.ClientElasticsearch{RequestBody: reqBody, SourceURL: *sourceURL}
 	jsonBlob, _ := c.GetAggregationRecord()
 	cms, numInvalid := metric.ParseToCochMetric(jsonBlob, *delimiter, numLabels)
 	cochGauge.Reset()

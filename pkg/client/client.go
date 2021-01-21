@@ -25,19 +25,15 @@ func (c *ClientFile) GetAggregationRecord() ([]byte, error) {
 
 // ClientElasticsearch ...
 type ClientElasticsearch struct {
-	RequestBodyAbsPath string
-	SourceURL          string
+	RequestBody []byte
+	SourceURL   string
 }
 
 func (c *ClientElasticsearch) GetAggregationRecord() ([]byte, error) {
 	client := &http.Client{}
 	client.Timeout = time.Second * 10
-	reqBody, err := ioutil.ReadFile(c.RequestBodyAbsPath)
-	if err != nil {
-		log.Fatal(err)
-	}
 
-	req, err := http.NewRequest(http.MethodGet, c.SourceURL, bytes.NewBuffer(reqBody))
+	req, err := http.NewRequest(http.MethodGet, c.SourceURL, bytes.NewBuffer(c.RequestBody))
 	req.Header.Set("Content-Type", "application/json")
 	if err != nil {
 		log.Fatal(err)
