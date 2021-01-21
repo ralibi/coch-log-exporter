@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 // Client interface used to abstract and mock several function
@@ -30,6 +31,7 @@ type ClientElasticsearch struct {
 
 func (c *ClientElasticsearch) GetAggregationRecord() ([]byte, error) {
 	client := &http.Client{}
+	client.Timeout = time.Second * 10
 	reqBody, err := ioutil.ReadFile(c.RequestBodyAbsPath)
 	if err != nil {
 		log.Fatal(err)
