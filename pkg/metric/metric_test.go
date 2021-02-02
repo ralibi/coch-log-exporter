@@ -28,11 +28,13 @@ func TestParseToCochMetric(t *testing.T) {
 			Timestamp:     161100000000,
 			Metric:        800.8,
 			ConfigFileIDs: []string{"project-a", "module-json", "service-json", "ansible-json", "v1_0_1", "-opt-config-json"},
+			DiffStatus:    "diff",
 		},
 		{
 			Timestamp:     161100000001,
 			Metric:        1001,
 			ConfigFileIDs: []string{"project-a", "module-component-primary", "service", "ansible-component", "1-1-1", "component-conf"},
+			DiffStatus:    "equal",
 		},
 	}
 	cms, _ := ParseToCochMetric(jsonBlob, "__", 6)
@@ -65,6 +67,17 @@ func TestGetBuckets(t *testing.T) {
 	for i, b := range got {
 		t.Run(fmt.Sprintf("Should got correct bucket at %v", i), func(t *testing.T) {
 			assert.Equal(t, b.(map[string]interface{}), want[i])
+		})
+	}
+}
+
+func TestGetDiffStatusByMetric(t *testing.T) {
+	metrics := []float64{0.1, 1, 555, 888.88, 1000, 1000.0, 1000.99, 1001.0}
+	wants := []string{"diff", "node", "diff", "diff", "yggdrasil", "yggdrasil", "diff", "equal"}
+	for i, m := range metrics {
+		t.Run(fmt.Sprintf("Should got correct diff status: %v; with metric : %v", wants[i], m), func(t *testing.T) {
+			got := getDiffStatusByMetric(m)
+			assert.Equal(t, got, wants[i])
 		})
 	}
 }

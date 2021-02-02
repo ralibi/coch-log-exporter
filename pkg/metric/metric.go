@@ -11,6 +11,7 @@ type CochMetric struct {
 	Timestamp     int
 	Metric        float64
 	ConfigFileIDs []string
+	DiffStatus    string
 }
 
 type CochConfigFileLine struct {
@@ -98,13 +99,28 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]Coch
 			continue
 		}
 
+		metricValue := avgLinesMetric(getLines(cf))
 		cm := CochMetric{
 			Timestamp:     int(getBucketValue(getBuckets(cf, "TIMESTAMP")[0]).(float64)),
-			Metric:        avgLinesMetric(getLines(cf)),
+			Metric:        metricValue,
 			ConfigFileIDs: sids,
+			DiffStatus:    getDiffStatusByMetric(metricValue),
 		}
 		arr = append(arr, cm)
 	}
 
 	return arr, numInvalid
+}
+
+func getDiffStatusByMetric(val float64) string {
+	switch val {
+	case 1.0:
+		return "node"
+	case 1000.0:
+		return "yggdrasil"
+	case 1001.0:
+		return "equal"
+	default:
+		return "diff"
+	}
 }

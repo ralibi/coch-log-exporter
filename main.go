@@ -32,7 +32,7 @@ func init() {
 	cochGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "conformance_checker_gauge",
 		Help: "Conformance Checker Gauge",
-	}, strings.Split(strings.ReplaceAll(*labels, " ", ""), ","))
+	}, append(strings.Split(strings.ReplaceAll(*labels, " ", ""), ","), "diff_status"))
 	cochInvalid = prometheus.NewGauge(prometheus.GaugeOpts{
 		Name: "conformance_checker_invalid_config_file_id_gauge",
 		Help: "Conformance Checker Invalid Config File ID Gauge",
@@ -68,7 +68,7 @@ func collect() {
 	cochGauge.Reset()
 	for _, cm := range cms {
 		cochGauge.WithLabelValues(
-			cm.ConfigFileIDs...,
+			append(cm.ConfigFileIDs, cm.DiffStatus)...,
 		).Set(cm.Metric)
 	}
 	cochInvalid.Set(float64(numInvalid))
