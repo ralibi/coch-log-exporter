@@ -28,13 +28,11 @@ func TestParseToCochMetric(t *testing.T) {
 			Timestamp:     1613630700000,
 			Metric:        1001,
 			ConfigFileIDs: []string{"project-a", "terraform-module", "project-a-pilot-01", "service-xyz", "v1_4_7", "-etc-another-config-conf"},
-			DiffStatus:    "equal",
 		},
 		{
 			Timestamp:     1613630700000,
 			Metric:        1001,
 			ConfigFileIDs: []string{"project-a", "terraform-module", "project-a-pilot-01", "service-xyz", "v1_4_7", "-var-lib-config-auto-conf"},
-			DiffStatus:    "equal",
 		},
 	}
 	cms, _ := ParseToCochMetric(jsonBlob, "__", 6)
@@ -67,17 +65,6 @@ func TestGetBuckets(t *testing.T) {
 	for i, b := range got {
 		t.Run(fmt.Sprintf("Should got correct bucket at %v", i), func(t *testing.T) {
 			assert.Equal(t, b.(map[string]interface{}), want[i])
-		})
-	}
-}
-
-func TestGetDiffStatusByMetric(t *testing.T) {
-	metrics := []float64{0.1, 1, 555, 888.88, 1000, 1000.0, 1000.99, 1001.0}
-	wants := []string{"diff", "node", "diff", "diff", "yggdrasil", "yggdrasil", "diff", "equal"}
-	for i, m := range metrics {
-		t.Run(fmt.Sprintf("Should got correct diff status: %v; with metric : %v", wants[i], m), func(t *testing.T) {
-			got := getDiffStatusByMetric(m)
-			assert.Equal(t, got, wants[i])
 		})
 	}
 }
