@@ -23,11 +23,11 @@
             "size": 1
           },
           "aggs": {
-            "KEY": {
+            "KEY_VALUE_TYPE": {
               "terms": {
-                "field": "key.keyword",
-                "order": {
-                  "1": "desc"
+                "script": {
+                  "source": "doc['key.keyword'] + ' ' + doc['value.keyword'] + ' ' + doc['type.keyword']",
+                  "lang": "painless"
                 },
                 "size": 10000
               },
@@ -37,46 +37,14 @@
                     "field": "metric"
                   }
                 },
-                "VALUE": {
-                  "terms": {
-                    "field": "value.keyword",
-                    "order": {
-                      "1": "desc"
-                    },
-                    "size": 10000
-                  },
-                  "aggs": {
-                    "1": {
-                      "cardinality": {
-                        "field": "metric"
-                      }
-                    },
-                    "TYPE": {
-                      "terms": {
-                        "field": "type.keyword",
-                        "order": {
-                          "1": "desc"
-                        },
-                        "size": 10000
-                      },
-                      "aggs": {
-                        "1": {
-                          "cardinality": {
-                            "field": "metric"
-                          }
-                        },
-                        "MAX": {
-                          "max": {
-                            "field": "metric"
-                          }
-                        },
-                        "MIN": {
-                          "min": {
-                            "field": "metric"
-                          }
-                        }
-                      }
-                    }
+                "MAX": {
+                  "max": {
+                    "field": "metric"
+                  }
+                },
+                "MIN": {
+                  "min": {
+                    "field": "metric"
                   }
                 }
               }

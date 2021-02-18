@@ -58,23 +58,17 @@ func getLines(configFile interface{}) []CochConfigFileLine {
 	lines := []CochConfigFileLine{}
 
 	timestampBuckets := getBuckets(configFile, "TIMESTAMP")
-	for _, k := range getBuckets(timestampBuckets[0], "KEY") {
-		kval := getBucketValue(k).(string)
-		for _, v := range getBuckets(k, "VALUE") {
-			vval := getBucketValue(v).(string)
-			for _, t := range getBuckets(v, "TYPE") {
-				tval := getBucketValue(t).(string)
-				cfl := CochConfigFileLine{
-					ConfigFileID: getBucketValue(configFile).(string),
-					Key:          kval,
-					Value:        vval,
-					Type:         tval,
-					Metric:       calcBucketMetric(t),
-				}
-
-				lines = append(lines, cfl)
-			}
+	for _, kvt := range getBuckets(timestampBuckets[0], "KEY_VALUE_TYPE") {
+		tval := getBucketValue(kvt).(string)
+		cfl := CochConfigFileLine{
+			ConfigFileID: getBucketValue(configFile).(string),
+			Key:          tval,
+			Value:        tval,
+			Type:         tval,
+			Metric:       calcBucketMetric(kvt),
 		}
+
+		lines = append(lines, cfl)
 	}
 
 	return lines

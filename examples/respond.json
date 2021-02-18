@@ -1,306 +1,92 @@
 {
+  "took": 764,
+  "timed_out": false,
+  "_shards": {
+    "total": 60,
+    "successful": 60,
+    "skipped": 0,
+    "failed": 0
+  },
+  "hits": {
+    "total": {
+      "value": 10000,
+      "relation": "gte"
+    },
+    "max_score": 0.0
+  },
   "aggregations": {
     "CONFIG_FILE_ID": {
+      "doc_count_error_upper_bound": 0,
+      "sum_other_doc_count": 0,
       "buckets": [
         {
-          "key": "project-a__module-json__service-json__ansible-json__v1_0_1__-opt-config-json",
+          "key": "project-a__terraform-module__project-a-pilot-01__service-xyz__v1_4_7__-etc-another-config-conf",
+          "doc_count": 40,
           "1": {
             "value": 2
           },
           "TIMESTAMP": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 20,
             "buckets": [
               {
-                "key": 161100000000,
-                "KEY": {
+                "key": 1613630700000,
+                "key_as_string": "2021-02-18T06:45:00.000Z",
+                "doc_count": 20,
+                "KEY_VALUE_TYPE": {
+                  "doc_count_error_upper_bound": 0,
+                  "sum_other_doc_count": 0,
                   "buckets": [
                     {
-                      "key": "_id",
+                      "key": "[host\tall\tall\t127.0.0.1/32\tmd5] [host\tall\tall\t127.0.0.1/32\tmd5] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "5fb764d6a0b9fb005b26ac08",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     },
                     {
-                      "key": "address",
+                      "key": "[host\tall\tall\t::1/128\tmd5] [host\tall\tall\t::1/128\tmd5] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "663 Trucklemans Lane, Hillsboro, New York, 6375",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     },
                     {
-                      "key": "age",
+                      "key": "[local\tall\tall\tpeer] [local\tall\tall\tpeer] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "33",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "float32",
-                                  "1": {
-                                    "value": 1
-                                  },
-                                  "MIN": {
-                                    "value": 1000.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                },
-                                {
-                                  "key": "float64",
-                                  "1": {
-                                    "value": 1
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     },
                     {
-                      "key": "balance",
+                      "key": "[local\tall\tpostgres\tpeer\tmap=root_as_postgres] [local\tall\tpostgres\tpeer\tmap=root_as_postgres] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "$1,319.38",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "key": "company",
-                      "1": {
-                        "value": 2
+                      "MIN": {
+                        "value": 1.0
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "MAGNEMO",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "key": "email",
-                      "1": {
-                        "value": 2
-                      },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "carolineharmon@magnemo.com",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "key": "eyeColor",
-                      "1": {
-                        "value": 2
-                      },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "green",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
-                      }
-                    },
-                    {
-                      "key": "favoriteFruit",
-                      "1": {
-                        "value": 2
-                      },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "strawberry",
-                            "1": {
-                              "value": 1
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 1
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1.0
-                                  }
-                                }
-                              ]
-                            }
-                          },
-                          {
-                            "key": "orange",
-                            "1": {
-                              "value": 1
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 1
-                                  },
-                                  "MIN": {
-                                    "value": 1000.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MAX": {
+                        "value": 1000.0
                       }
                     }
                   ]
@@ -310,174 +96,281 @@
           }
         },
         {
-          "key": "project-a__module-component-primary__service__ansible-component__1-1-1__component-conf",
+          "key": "project-a__terraform-module__project-a-pilot-01__service-xyz__v1_4_7__-var-lib-config-auto-conf",
+          "doc_count": 80,
           "1": {
             "value": 2
           },
           "TIMESTAMP": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 40,
             "buckets": [
               {
-                "key": 161100000001,
-                "KEY": {
+                "key": 1613630700000,
+                "key_as_string": "2021-02-18T06:45:00.000Z",
+                "doc_count": 40,
+                "KEY_VALUE_TYPE": {
+                  "doc_count_error_upper_bound": 0,
+                  "sum_other_doc_count": 0,
                   "buckets": [
                     {
-                      "key": "activerehashing yes",
+                      "key": "[autovacuum_max_workers = '4'] [autovacuum_max_workers = '4'] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "activerehashing yes",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     },
                     {
-                      "key": "aof-rewrite-incremental-fsync yes",
+                      "key": "[autovacuum_vacuum_cost_limit = '400'] [autovacuum_vacuum_cost_limit = '400'] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "aof-rewrite-incremental-fsync yes",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     },
                     {
-                      "key": "mergefilepath",
+                      "key": "[autovacuum_vacuum_scale_factor = '0.05'] [autovacuum_vacuum_scale_factor = '0.05'] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "mergefilepath",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     },
                     {
-                      "key": "mergefsync everysec",
+                      "key": "[autovacuum_vacuum_threshold = '100000'] [autovacuum_vacuum_threshold = '100000'] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "mergefsync everysec",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     },
                     {
-                      "key": "mergeonly yes",
+                      "key": "[checkpoint_completion_target = '0.9'] [checkpoint_completion_target = '0.9'] [string]",
+                      "doc_count": 2,
                       "1": {
                         "value": 2
                       },
-                      "VALUE": {
-                        "buckets": [
-                          {
-                            "key": "mergeonly yes",
-                            "1": {
-                              "value": 2
-                            },
-                            "TYPE": {
-                              "buckets": [
-                                {
-                                  "key": "string",
-                                  "1": {
-                                    "value": 2
-                                  },
-                                  "MIN": {
-                                    "value": 1.0
-                                  },
-                                  "MAX": {
-                                    "value": 1000.0
-                                  }
-                                }
-                              ]
-                            }
-                          }
-                        ]
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[effective_cache_size = '5313MB'] [effective_cache_size = '5313MB'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[effective_io_concurrency = '200'] [effective_io_concurrency = '200'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[idle_in_transaction_session_timeout = '10s'] [idle_in_transaction_session_timeout = '10s'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[log_min_duration_statement = '50'] [log_min_duration_statement = '50'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[maintenance_work_mem = '443MB'] [maintenance_work_mem = '443MB'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[max_parallel_maintenance_workers = '1'] [max_parallel_maintenance_workers = '1'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[max_parallel_workers = '2'] [max_parallel_workers = '2'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[max_parallel_workers_per_gather = '1'] [max_parallel_workers_per_gather = '1'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[max_replication_slots = '4'] [max_replication_slots = '4'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[max_wal_size = '4GB'] [max_wal_size = '4GB'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[max_worker_processes = '2'] [max_worker_processes = '2'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[min_wal_size = '2GB'] [min_wal_size = '2GB'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[random_page_cost = '1.1'] [random_page_cost = '1.1'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[shared_buffers = '1771MB'] [shared_buffers = '1771MB'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[work_mem = '2MB'] [work_mem = '2MB'] [string]",
+                      "doc_count": 2,
+                      "1": {
+                        "value": 2
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
                       }
                     }
                   ]

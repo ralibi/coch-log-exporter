@@ -25,15 +25,15 @@ func TestParseToCochMetric(t *testing.T) {
 
 	want := []CochMetric{
 		{
-			Timestamp:     161100000000,
-			Metric:        800.8,
-			ConfigFileIDs: []string{"project-a", "module-json", "service-json", "ansible-json", "v1_0_1", "-opt-config-json"},
-			DiffStatus:    "diff",
+			Timestamp:     1613630700000,
+			Metric:        1001,
+			ConfigFileIDs: []string{"project-a", "terraform-module", "project-a-pilot-01", "service-xyz", "v1_4_7", "-etc-another-config-conf"},
+			DiffStatus:    "equal",
 		},
 		{
-			Timestamp:     161100000001,
+			Timestamp:     1613630700000,
 			Metric:        1001,
-			ConfigFileIDs: []string{"project-a", "module-component-primary", "service", "ansible-component", "1-1-1", "component-conf"},
+			ConfigFileIDs: []string{"project-a", "terraform-module", "project-a-pilot-01", "service-xyz", "v1_4_7", "-var-lib-config-auto-conf"},
 			DiffStatus:    "equal",
 		},
 	}
