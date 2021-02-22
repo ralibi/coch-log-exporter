@@ -35,10 +35,12 @@ func TestParseToCochMetric(t *testing.T) {
 			ConfigFileIDs: []string{"project-a", "terraform-module", "project-a-pilot-01", "service-xyz", "v1_4_7", "-var-lib-config-auto-conf"},
 		},
 	}
-	cms, _ := ParseToCochMetric(jsonBlob, "__", 6)
+	cms, _, _ := ParseToCochMetric(jsonBlob, "__", 6)
 	for i, got := range cms {
 		t.Run(fmt.Sprintf("Should got correct bucket at %v", i), func(t *testing.T) {
-			assert.Equal(t, got, want[i])
+			assert.Equal(t, got.Timestamp, want[i].Timestamp)
+			assert.Equal(t, got.Metric, want[i].Metric)
+			assert.Equal(t, got.ConfigFileIDs, want[i].ConfigFileIDs)
 		})
 	}
 }
@@ -65,6 +67,21 @@ func TestGetBuckets(t *testing.T) {
 	for i, b := range got {
 		t.Run(fmt.Sprintf("Should got correct bucket at %v", i), func(t *testing.T) {
 			assert.Equal(t, b.(map[string]interface{}), want[i])
+		})
+	}
+}
+
+func TestConfigFileType(t *testing.T) {
+	inputs := [][]string{
+		[]string{"project-a", "terraform-module--optimal", "optimal", "ansible-xyz", "v1_4_7", "-etc-another-config-conf"},
+		[]string{"project-a", "terraform-module--optimal", "project-a-pilot-01", "ansible-xyz", "v1_4_7", "-etc-another-config-conf"},
+		[]string{"project-a", "terraform-module", "project-a-pilot-01", "ansible-xyz", "v1_4_7", "-etc-another-config-conf"},
+	}
+	wants := []string{"YGGDRASIL_OPTIMAL_CONFIGURATION", "VM_OPTIMAL_CONFIGURATION", "DIFF_CONFIGURATION"}
+	for i, input := range inputs {
+		t.Run(fmt.Sprintf("Should got correct Config Filt Type at %v", i), func(t *testing.T) {
+			got := configFileType(input)
+			assert.Equal(t, got, wants[i])
 		})
 	}
 }

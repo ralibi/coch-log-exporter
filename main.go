@@ -22,8 +22,9 @@ var (
 )
 
 var (
-	cochGauge   = &prometheus.GaugeVec{}
-	cochInvalid = prometheus.NewGauge(prometheus.GaugeOpts{})
+	cochGauge        = &prometheus.GaugeVec{}
+	cochInvalid      = prometheus.NewGauge(prometheus.GaugeOpts{})
+	cochOptimalGauge = &prometheus.GaugeVec{}
 )
 
 func init() {
@@ -37,10 +38,15 @@ func init() {
 		Name: "conformance_checker_invalid_config_file_id_gauge",
 		Help: "Conformance Checker Invalid Config File ID Gauge",
 	})
+	cochOptimalGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "conformance_checker_optimal_gauge",
+		Help: "Conformance Checker Optimal Gauge",
+	}, strings.Split(strings.ReplaceAll(*labels, " ", ""), ","))
 
 	// Register the summary and the histogram with Prometheus's default registry.
 	prometheus.MustRegister(cochGauge)
 	prometheus.MustRegister(cochInvalid)
+	prometheus.MustRegister(cochOptimalGauge)
 	// Add Go module build info.
 	prometheus.MustRegister(prometheus.NewBuildInfoCollector())
 }
@@ -64,7 +70,7 @@ func collect() {
 	reqBody := []byte(`{"aggs":{"CONFIG_FILE_ID":{"terms":{"field":"config_file_id.keyword","order":{"1":"desc"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"TIMESTAMP":{"terms":{"field":"timestamp","order":{"_key":"desc"},"size":1},"aggs":{"KEY_VALUE_TYPE":{"terms":{"script":{"source":"doc['key.keyword'] + ' ' + doc['value.keyword'] + ' ' + doc['type.keyword']","lang":"painless"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"MAX":{"max":{"field":"metric"}},"MIN":{"min":{"field":"metric"}}}}}}}}},"size":0,"_source":{"excludes":[]},"stored_fields":["*"],"script_fields":{},"docvalue_fields":[{"field":"@timestamp","format":"date_time"},{"field":"timestamp","format":"date_time"}],"query":{"bool":{"must":[],"filter":[{"match_all":{}},{"range":{"@timestamp":{"gte":"now-8m","lte":"now"}}}],"should":[],"must_not":[]}}}`)
 	c := client.ClientElasticsearch{RequestBody: reqBody, SourceURL: *sourceURL}
 	jsonBlob, _ := c.GetAggregationRecord()
-	cms, numInvalid := metric.ParseToCochMetric(jsonBlob, *delimiter, numLabels)
+	cms, optimals, numInvalid := metric.ParseToCochMetric(jsonBlob, *delimiter, numLabels)
 	cochGauge.Reset()
 	for _, cm := range cms {
 		cochGauge.WithLabelValues(
@@ -72,4 +78,10 @@ func collect() {
 		).Set(cm.Metric)
 	}
 	cochInvalid.Set(float64(numInvalid))
+	cochOptimalGauge.Reset()
+	for _, optimal := range optimals {
+		cochOptimalGauge.WithLabelValues(
+			optimal.ConfigFileIDs...,
+		).Set(optimal.Metric)
+	}
 }
