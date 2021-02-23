@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"github.com/prometheus/client_golang/prometheus"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"log"
@@ -9,16 +10,19 @@ import (
 	"main/pkg/metric"
 	"net/http"
 	"strings"
+	"sync"
 	"time"
 )
 
 var (
-	addr      = flag.String("listen-address", ":8090", "The address to listen on for HTTP requests.")
-	sourceURL = flag.String("source-url", "http://10.11.12.13:9200/some-index-*/_search?size=10000", "Elasticsearch source url.")
-	delimiter = flag.String("delimiter", "__", "Config file id delimiter.")
-	interval  = flag.Int("interval", 2, "Request to Elasticsearch url interval in second")
-	labels    = flag.String("labels", "label_1, label_2, label_3, label_4, label_5, label_6", "The labels that will be exported.")
-	numLabels = len(strings.Split(*labels, ","))
+	addr          = flag.String("listen-address", ":8090", "The address to listen on for HTTP requests.")
+	sourceURL     = flag.String("source-url", "http://10.11.12.13:9200/", "Elasticsearch source url.")
+	indexList     = flag.String("index-list", "index-1-*, index-2-*", "Elasticsearch index")
+	componentList = flag.String("component-list", "component-1, component-2, component-3", "List of components")
+	delimiter     = flag.String("delimiter", "__", "Config file id delimiter.")
+	interval      = flag.Int("interval", 2, "Request to Elasticsearch url interval in second")
+	labels        = flag.String("labels", "label_1, label_2, label_3, label_4, label_5, label_6", "The labels that will be exported.")
+	numLabels     = len(strings.Split(*labels, ","))
 )
 
 var (
@@ -67,10 +71,8 @@ func main() {
 }
 
 func collect() {
-	reqBody := []byte(`{"aggs":{"CONFIG_FILE_ID":{"terms":{"field":"config_file_id.keyword","order":{"1":"desc"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"TIMESTAMP":{"terms":{"field":"timestamp","order":{"_key":"desc"},"size":1},"aggs":{"KEY_VALUE_TYPE":{"terms":{"script":{"source":"doc['key.keyword'] + ' ' + doc['value.keyword'] + ' ' + doc['type.keyword']","lang":"painless"},"size":10000},"aggs":{"1":{"cardinality":{"field":"metric"}},"MAX":{"max":{"field":"metric"}},"MIN":{"min":{"field":"metric"}}}}}}}}},"size":0,"_source":{"excludes":[]},"stored_fields":["*"],"script_fields":{},"docvalue_fields":[{"field":"@timestamp","format":"date_time"},{"field":"timestamp","format":"date_time"}],"query":{"bool":{"must":[],"filter":[{"match_all":{}},{"range":{"@timestamp":{"gte":"now-8m","lte":"now"}}}],"should":[],"must_not":[]}}}`)
-	c := client.ClientElasticsearch{RequestBody: reqBody, SourceURL: *sourceURL}
-	jsonBlob, _ := c.GetAggregationRecord()
-	cms, optimals, numInvalid := metric.ParseToCochMetric(jsonBlob, *delimiter, numLabels)
+	cms, optimals, numInvalid := searchElasticsearchAggregation()
+
 	cochGauge.Reset()
 	for _, cm := range cms {
 		cochGauge.WithLabelValues(
@@ -84,4 +86,149 @@ func collect() {
 			optimal.ConfigFileIDs...,
 		).Set(optimal.Metric)
 	}
+}
+
+func searchElasticsearchAggregation() ([]metric.CochMetric, []*metric.CochMetric, int) {
+	idxList := strings.Split(strings.ReplaceAll(*indexList, " ", ""), ",")
+	compList := strings.Split(strings.ReplaceAll(*componentList, " ", ""), ",")
+
+	resultDiffs := []metric.CochMetric{}
+	resultOptimals := []*metric.CochMetric{}
+	resultNumInvalid := 0
+
+	var wg sync.WaitGroup
+	fmt.Printf("Requesting %v searches ...\n", len(idxList)*len(compList))
+
+	for _, idx := range idxList {
+		for _, comp := range compList {
+			wg.Add(1)
+			go func(index, component string) {
+				defer wg.Done()
+				fmt.Printf("Requesting index %v; component %v...\n", index, component)
+
+				reqBody := generateRequestBody(component)
+				source := fmt.Sprintf("%s/%s/_search?size=0", *sourceURL, index)
+				c := client.ClientElasticsearch{RequestBody: reqBody, SourceURL: source}
+				jsonBlob, _ := c.GetAggregationRecord()
+				diffs, optimals, numInvalid := metric.ParseToCochMetric(jsonBlob, *delimiter, numLabels)
+
+				resultDiffs = append(resultDiffs, diffs...)
+				resultOptimals = append(resultOptimals, optimals...)
+				resultNumInvalid = resultNumInvalid + numInvalid
+			}(idx, comp)
+		}
+	}
+	wg.Wait()
+
+	return resultDiffs, resultOptimals, resultNumInvalid
+}
+
+func generateRequestBody(componentName string) []byte {
+	return []byte(fmt.Sprintf(`{
+	  "aggs": {
+	    "CONFIG_FILE_ID": {
+	      "terms": {
+	        "field": "config_file_id.keyword",
+	        "order": {
+	          "1": "desc"
+	        },
+	        "size": 10000
+	      },
+	      "aggs": {
+	        "1": {
+	          "cardinality": {
+	            "field": "metric"
+	          }
+	        },
+	        "TIMESTAMP": {
+	          "terms": {
+	            "field": "timestamp",
+	            "order": {
+	              "_key": "desc"
+	            },
+	            "size": 1
+	          },
+	          "aggs": {
+	            "KEY_VALUE_TYPE": {
+	              "terms": {
+	                "script": {
+	                  "source": "doc['key.keyword'] + ' ' + doc['value.keyword'] + ' ' + doc['type.keyword']",
+	                  "lang": "painless"
+	                },
+	                "size": 10000
+	              },
+	              "aggs": {
+	                "1": {
+	                  "cardinality": {
+	                    "field": "metric"
+	                  }
+	                },
+	                "MAX": {
+	                  "max": {
+	                    "field": "metric"
+	                  }
+	                },
+	                "MIN": {
+	                  "min": {
+	                    "field": "metric"
+	                  }
+	                }
+	              }
+	            }
+	          }
+	        }
+	      }
+	    }
+	  },
+	  "size": 0,
+	  "_source": {
+	    "excludes": []
+	  },
+	  "stored_fields": [
+	    "*"
+	  ],
+	  "script_fields": {},
+	  "docvalue_fields": [
+	    {
+	      "field": "@timestamp",
+	      "format": "date_time"
+	    },
+	    {
+	      "field": "timestamp",
+	      "format": "date_time"
+	    }
+	  ],
+	  "query": {
+	    "bool": {
+	      "must": [],
+	      "filter": [
+	        {
+	          "bool": {
+	            "should": [
+	              {
+	                "query_string": {
+	                  "fields": [
+	                    "config_file_id.keyword"
+	                  ],
+	                  "query": "*%s*"
+	                }
+	              }
+	            ],
+	            "minimum_should_match": 1
+	          }
+	        },
+	        {
+	          "range": {
+	            "@timestamp": {
+	              "gte": "now-8m",
+	              "lte": "now"
+	            }
+	          }
+	        }
+	      ],
+	      "should": [],
+	      "must_not": []
+	    }
+	  }
+	}`, componentName))
 }
