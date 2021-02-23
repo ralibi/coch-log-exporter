@@ -81,13 +81,13 @@ func main() {
 }
 
 func collect() {
-	cms, optimals, buckets, numInvalid := searchElasticsearchAggregation()
+	diffs, optimals, buckets, numInvalid := searchElasticsearchAggregation()
 
 	cochGauge.Reset()
-	for _, cm := range cms {
+	for _, diff := range diffs {
 		cochGauge.WithLabelValues(
-			cm.ConfigFileIDs...,
-		).Set(cm.Metric)
+			diff.ConfigFileIDs...,
+		).Set(diff.Metric)
 	}
 	cochOptimalGauge.Reset()
 	for _, optimal := range optimals {
@@ -106,11 +106,11 @@ func collect() {
 	cochInvalid.Set(float64(numInvalid))
 }
 
-func searchElasticsearchAggregation() ([]metric.CochMetric, []*metric.CochMetric, []*metric.CochBucketMetric, int) {
+func searchElasticsearchAggregation() ([]*metric.CochMetric, []*metric.CochMetric, []*metric.CochBucketMetric, int) {
 	idxList := strings.Split(strings.ReplaceAll(*indexList, " ", ""), ",")
 	compList := strings.Split(strings.ReplaceAll(*componentList, " ", ""), ",")
 
-	resultDiffs := []metric.CochMetric{}
+	resultDiffs := []*metric.CochMetric{}
 	resultOptimals := []*metric.CochMetric{}
 	resultBuckets := []*metric.CochBucketMetric{}
 	resultNumInvalid := 0

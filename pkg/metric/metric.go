@@ -84,7 +84,7 @@ func getLines(configFile interface{}, cfType string) []CochConfigFileLine {
 	return lines
 }
 
-func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]CochMetric, []*CochMetric, int) {
+func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]*CochMetric, []*CochMetric, int) {
 	j := make(map[string]interface{})
 	err := json.Unmarshal(jsonBlob, &j)
 	if err != nil {
@@ -93,7 +93,7 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]Coch
 
 	cfBuckets := getBuckets(j["aggregations"], "CONFIG_FILE_ID")
 
-	arr := []CochMetric{}
+	diffs := []*CochMetric{}
 	yggOptimal := map[string]*CochMetric{}
 	vmOptimal := map[string]*CochMetric{}
 	numInvalid := 0
@@ -110,13 +110,13 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]Coch
 		lines := getLines(cf, cft)
 		switch cft {
 		case "DIFF_CONFIGURATION":
-			cm := CochMetric{
+			diff := &CochMetric{
 				Timestamp:     int(getBucketValue(getBuckets(cf, "TIMESTAMP")[0]).(float64)),
 				Lines:         lines,
 				Metric:        avgLinesMetric(lines),
 				ConfigFileIDs: sids,
 			}
-			arr = append(arr, cm)
+			diffs = append(diffs, diff)
 		case "YGGDRASIL_OPTIMAL_CONFIGURATION":
 			yggOptimal[cfid] = &CochMetric{
 				Timestamp:     int(getBucketValue(getBuckets(cf, "TIMESTAMP")[0]).(float64)),
@@ -136,7 +136,7 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]Coch
 
 	optimals := mergeOptimals(vmOptimal, yggOptimal, delimiter)
 
-	return arr, optimals, numInvalid
+	return diffs, optimals, numInvalid
 }
 
 func mergeOptimals(vmOptimal, yggOptimal map[string]*CochMetric, delimiter string) []*CochMetric {
