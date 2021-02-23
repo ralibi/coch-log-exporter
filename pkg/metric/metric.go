@@ -20,6 +20,12 @@ type CochMetric struct {
 	ConfigFileIDs []string
 }
 
+type CochBucketMetric struct {
+	Index     string
+	Component string
+	Metric    int
+}
+
 func splitConfigFileID(name, delimiter string, numLabels int) ([]string, error) {
 	result := strings.Split(name, delimiter)
 	if len(result) != numLabels {
@@ -181,4 +187,12 @@ func configFileType(labels []string) string {
 	}
 	// "project-a", "terraform-module", "project-a-pilot-01", "ansible-xyz", "v1_4_7", "-etc-another-config-conf"
 	return "DIFF_CONFIGURATION"
+}
+
+func ParseToCochBucketMetric(jsonBlob []byte, index, component string) *CochBucketMetric {
+	return &CochBucketMetric{
+		Index:     index,
+		Component: component,
+		Metric:    strings.Count(string(jsonBlob), `"key":"`),
+	}
 }

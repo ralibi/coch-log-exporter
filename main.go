@@ -27,8 +27,9 @@ var (
 
 var (
 	cochGauge        = &prometheus.GaugeVec{}
-	cochInvalid      = prometheus.NewGauge(prometheus.GaugeOpts{})
 	cochOptimalGauge = &prometheus.GaugeVec{}
+	cochBucketsGauge = &prometheus.GaugeVec{}
+	cochInvalid      = prometheus.NewGauge(prometheus.GaugeOpts{})
 )
 
 func init() {
@@ -38,19 +39,28 @@ func init() {
 		Name: "conformance_checker_gauge",
 		Help: "Conformance Checker Gauge",
 	}, strings.Split(strings.ReplaceAll(*labels, " ", ""), ","))
-	cochInvalid = prometheus.NewGauge(prometheus.GaugeOpts{
-		Name: "conformance_checker_invalid_config_file_id_gauge",
-		Help: "Conformance Checker Invalid Config File ID Gauge",
-	})
+
 	cochOptimalGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
 		Name: "conformance_checker_optimal_gauge",
 		Help: "Conformance Checker Optimal Gauge",
 	}, strings.Split(strings.ReplaceAll(*labels, " ", ""), ","))
 
+	cochBucketsGauge = prometheus.NewGaugeVec(prometheus.GaugeOpts{
+		Name: "conformance_checker_buckets_gauge",
+		Help: "Conformance Checker Buckets Gauge",
+	}, []string{"index", "component"})
+
+	cochInvalid = prometheus.NewGauge(prometheus.GaugeOpts{
+		Name: "conformance_checker_invalid_config_file_id_gauge",
+		Help: "Conformance Checker Invalid Config File ID Gauge",
+	})
+
 	// Register the summary and the histogram with Prometheus's default registry.
 	prometheus.MustRegister(cochGauge)
-	prometheus.MustRegister(cochInvalid)
 	prometheus.MustRegister(cochOptimalGauge)
+	prometheus.MustRegister(cochBucketsGauge)
+
+	prometheus.MustRegister(cochInvalid)
 	// Add Go module build info.
 	prometheus.MustRegister(prometheus.NewBuildInfoCollector())
 }
@@ -71,7 +81,7 @@ func main() {
 }
 
 func collect() {
-	cms, optimals, numInvalid := searchElasticsearchAggregation()
+	cms, optimals, buckets, numInvalid := searchElasticsearchAggregation()
 
 	cochGauge.Reset()
 	for _, cm := range cms {
@@ -79,21 +89,30 @@ func collect() {
 			cm.ConfigFileIDs...,
 		).Set(cm.Metric)
 	}
-	cochInvalid.Set(float64(numInvalid))
 	cochOptimalGauge.Reset()
 	for _, optimal := range optimals {
 		cochOptimalGauge.WithLabelValues(
 			optimal.ConfigFileIDs...,
 		).Set(optimal.Metric)
 	}
+	cochBucketsGauge.Reset()
+	for _, bucket := range buckets {
+		cochBucketsGauge.WithLabelValues(
+			bucket.Index,
+			bucket.Component,
+		).Set(float64(bucket.Metric))
+	}
+
+	cochInvalid.Set(float64(numInvalid))
 }
 
-func searchElasticsearchAggregation() ([]metric.CochMetric, []*metric.CochMetric, int) {
+func searchElasticsearchAggregation() ([]metric.CochMetric, []*metric.CochMetric, []*metric.CochBucketMetric, int) {
 	idxList := strings.Split(strings.ReplaceAll(*indexList, " ", ""), ",")
 	compList := strings.Split(strings.ReplaceAll(*componentList, " ", ""), ",")
 
 	resultDiffs := []metric.CochMetric{}
 	resultOptimals := []*metric.CochMetric{}
+	resultBuckets := []*metric.CochBucketMetric{}
 	resultNumInvalid := 0
 
 	var wg sync.WaitGroup
@@ -111,16 +130,18 @@ func searchElasticsearchAggregation() ([]metric.CochMetric, []*metric.CochMetric
 				c := client.ClientElasticsearch{RequestBody: reqBody, SourceURL: source}
 				jsonBlob, _ := c.GetAggregationRecord()
 				diffs, optimals, numInvalid := metric.ParseToCochMetric(jsonBlob, *delimiter, numLabels)
+				bucket := metric.ParseToCochBucketMetric(jsonBlob, index, component)
 
 				resultDiffs = append(resultDiffs, diffs...)
 				resultOptimals = append(resultOptimals, optimals...)
+				resultBuckets = append(resultBuckets, bucket)
 				resultNumInvalid = resultNumInvalid + numInvalid
 			}(idx, comp)
 		}
 	}
 	wg.Wait()
 
-	return resultDiffs, resultOptimals, resultNumInvalid
+	return resultDiffs, resultOptimals, resultBuckets, resultNumInvalid
 }
 
 func generateRequestBody(componentName string) []byte {
