@@ -140,12 +140,12 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]*Coc
 }
 
 func mergeOptimals(vmOptimal, yggOptimal map[string]*CochMetric, delimiter string) []*CochMetric {
-	serviceNameIndex := 2
+	hostnameIndex := 3
 	optimals := []*CochMetric{}
 	for _, vm := range vmOptimal {
 		cfids := make([]string, len(vm.ConfigFileIDs))
 		copy(cfids, vm.ConfigFileIDs)
-		cfids[serviceNameIndex] = "optimal"
+		cfids[hostnameIndex] = "optimal"
 		yggCfid := strings.Join(cfids, delimiter)
 
 		if yggOptimal[yggCfid] != nil {
@@ -176,16 +176,16 @@ func calcOptimalMetric(vmLines, yggLines []CochConfigFileLine) float64 {
 }
 
 func configFileType(labels []string) string {
-	serviceNameIndex := 2
+	hostnameIndex := 3
 	if strings.Contains(labels[1], "optimal") {
-		if labels[serviceNameIndex] == "optimal" {
-			// "project-a", "terraform-module--optimal", "optimal", "ansible-xyz", "v1_4_7", "-etc-another-config-conf"
+		if labels[hostnameIndex] == "optimal" {
+			// "project-a", "terraform-module--optimal", "v1_4_7", "optimal", "ansible-xyz", "-etc-another-config-conf"
 			return "YGGDRASIL_OPTIMAL_CONFIGURATION"
 		}
-		// "project-a", "terraform-module--optimal", "project-a-pilot-01", "ansible-xyz", "v1_4_7", "-etc-another-config-conf"
+		// "project-a", "terraform-module--optimal", "v1_4_7", "project-a-pilot-01", "ansible-xyz", "-etc-another-config-conf"
 		return "VM_OPTIMAL_CONFIGURATION"
 	}
-	// "project-a", "terraform-module", "project-a-pilot-01", "ansible-xyz", "v1_4_7", "-etc-another-config-conf"
+	// "project-a", "terraform-module", "v1_4_7", "project-a-pilot-01", "ansible-xyz", "-etc-another-config-conf"
 	return "DIFF_CONFIGURATION"
 }
 

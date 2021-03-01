@@ -20,7 +20,7 @@
       "sum_other_doc_count": 0,
       "buckets": [
         {
-          "key": "project-a__terraform-module__project-a-pilot-01__service-xyz__v1_4_7__-etc-another-config-conf",
+          "key": "project-a__terraform-module__v1_4_7__project-a-pilot-01__provisioner-xyz__-etc-another-config-conf",
           "doc_count": 40,
           "1": {
             "value": 2
@@ -96,7 +96,7 @@
           }
         },
         {
-          "key": "project-a__terraform-module__project-a-pilot-01__service-xyz__v1_4_7__-var-lib-config-auto-conf",
+          "key": "project-a__terraform-module__v1_4_7__project-a-pilot-01__provisioner-xyz__-var-lib-config-auto-conf",
           "doc_count": 80,
           "1": {
             "value": 2
