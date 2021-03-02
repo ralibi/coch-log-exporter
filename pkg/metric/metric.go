@@ -55,15 +55,6 @@ func getBuckets(v interface{}, keyword string) []interface{} {
 	return v.(map[string]interface{})[keyword].(map[string]interface{})["buckets"].([]interface{})
 }
 
-func avgLinesMetric(lines []CochConfigFileLine) float64 {
-	sum := 0.0
-	for _, l := range lines {
-		sum = sum + l.Metric
-	}
-
-	return sum / float64(len(lines))
-}
-
 func countMetric(lines []CochConfigFileLine) (float64, float64, float64, float64) {
 	var bothCount, storageCount, vmCount, avg, sum float64
 	for _, l := range lines {
