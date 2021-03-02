@@ -88,6 +88,58 @@
                       "MAX": {
                         "value": 1000.0
                       }
+                    },
+                    {
+                      "key": "[foo] [foo] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[bar] [bar] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[buzz] [buzz] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[biss] [biss] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
                     }
                   ]
                 }
@@ -371,6 +423,275 @@
                       },
                       "MAX": {
                         "value": 1000.0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "key": "project-a__terraform-module--optimal__v1_4_7__optimal__provisioner-xyz-0__-etc-another-config-conf",
+          "doc_count": 40,
+          "1": {
+            "value": 2
+          },
+          "TIMESTAMP": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 20,
+            "buckets": [
+              {
+                "key": 1613630700000,
+                "key_as_string": "2021-02-18T06:45:00.000Z",
+                "doc_count": 20,
+                "KEY_VALUE_TYPE": {
+                  "doc_count_error_upper_bound": 0,
+                  "sum_other_doc_count": 0,
+                  "buckets": [
+                    {
+                      "key": "[host\tall\tall\t127.0.0.1/32\tmd5] [host\tall\tall\t127.0.0.1/32\tmd5] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[host\tall\tall\t::1/128\tmd5] [host\tall\tall\t::1/128\tmd5] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[local\tall\tall\tpeer] [local\tall\tall\tpeer] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[local\tall\tpostgres\tpeer\tmap=root_as_postgres] [local\tall\tpostgres\tpeer\tmap=root_as_postgres] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[foo] [foo] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[bar] [bar] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[buzz] [buzz] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[cool] [cool] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    },
+                    {
+                      "key": "[johndoe] [johndoe] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1000.0
+                      },
+                      "MAX": {
+                        "value": 1000.0
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "key": "project-a__terraform-module--optimal__v1_4_7__application-abc__provisioner-xyz-0__-etc-another-config-conf",
+          "doc_count": 40,
+          "1": {
+            "value": 2
+          },
+          "TIMESTAMP": {
+            "doc_count_error_upper_bound": 0,
+            "sum_other_doc_count": 20,
+            "buckets": [
+              {
+                "key": 1613630700000,
+                "key_as_string": "2021-02-18T06:45:00.000Z",
+                "doc_count": 20,
+                "KEY_VALUE_TYPE": {
+                  "doc_count_error_upper_bound": 0,
+                  "sum_other_doc_count": 0,
+                  "buckets": [
+                    {
+                      "key": "[host\tall\tall\t127.0.0.1/32\tmd5] [host\tall\tall\t127.0.0.1/32\tmd5] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[host\tall\tall\t::1/128\tmd5] [host\tall\tall\t::1/128\tmd5] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[local\tall\tall\tpeer] [local\tall\tall\tpeer] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[local\tall\tpostgres\tpeer\tmap=root_as_postgres] [local\tall\tpostgres\tpeer\tmap=root_as_postgres] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[foo] [foo] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[bar] [bar] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[buzz] [buzz] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
+                      }
+                    },
+                    {
+                      "key": "[biss] [biss] [string]",
+                      "doc_count": 1,
+                      "1": {
+                        "value": 1
+                      },
+                      "MIN": {
+                        "value": 1.0
+                      },
+                      "MAX": {
+                        "value": 1.0
                       }
                     }
                   ]

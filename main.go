@@ -87,13 +87,13 @@ func collect() {
 	for _, diff := range diffs {
 		cochGauge.WithLabelValues(
 			diff.ConfigFileIDs...,
-		).Set(diff.Metric)
+		).Set(diff.AggregatedMetric())
 	}
 	cochOptimalGauge.Reset()
 	for _, optimal := range optimals {
 		cochOptimalGauge.WithLabelValues(
 			optimal.ConfigFileIDs...,
-		).Set(optimal.Metric)
+		).Set(optimal.AggregatedMetric())
 	}
 	cochBucketsGauge.Reset()
 	for _, bucket := range buckets {

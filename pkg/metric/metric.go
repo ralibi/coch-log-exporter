@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math"
 	"strings"
 )
 
@@ -18,12 +19,24 @@ type CochMetric struct {
 	Lines         []CochConfigFileLine
 	Metric        float64
 	ConfigFileIDs []string
+	BothCount     float64
+	StorageCount  float64
+	VMCount       float64
 }
 
 type CochBucketMetric struct {
 	Index     string
 	Component string
 	Metric    int
+}
+
+func (cm *CochMetric) AggregatedMetric() float64 {
+	bc := cm.BothCount * math.Pow(10, 9)
+	sc := cm.StorageCount * math.Pow(10, 6)
+	vc := cm.VMCount * math.Pow(10, 3)
+	mt := cm.Metric / 10.0
+
+	return bc + sc + vc + mt
 }
 
 func splitConfigFileID(name, delimiter string, numLabels int) ([]string, error) {
@@ -51,6 +64,25 @@ func avgLinesMetric(lines []CochConfigFileLine) float64 {
 	return sum / float64(len(lines))
 }
 
+func countMetric(lines []CochConfigFileLine) (float64, float64, float64, float64) {
+	var bothCount, storageCount, vmCount, avg, sum float64
+	for _, l := range lines {
+		sum = sum + l.Metric
+
+		switch l.Metric {
+		case 1:
+			vmCount = vmCount + 1
+		case 1000:
+			storageCount = storageCount + 1
+		case 1001:
+			bothCount = bothCount + 1
+		}
+	}
+
+	avg = sum / float64(len(lines))
+	return bothCount, storageCount, vmCount, avg
+}
+
 func calcBucketMetric(b interface{}, cfType string) float64 {
 	switch cfType {
 	case "DIFF_CONFIGURATION":
@@ -58,7 +90,7 @@ func calcBucketMetric(b interface{}, cfType string) float64 {
 		max := b.(map[string]interface{})["MAX"].(map[string]interface{})["value"].(float64)
 		count := b.(map[string]interface{})["1"].(map[string]interface{})["value"].(float64)
 		return ((min + max) * count) / 2
-	case "YGGDRASIL_OPTIMAL_CONFIGURATION":
+	case "STORAGE_OPTIMAL_CONFIGURATION":
 		return 1000
 	case "VM_OPTIMAL_CONFIGURATION":
 		return 1
@@ -94,7 +126,7 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]*Coc
 	cfBuckets := getBuckets(j["aggregations"], "CONFIG_FILE_ID")
 
 	diffs := []*CochMetric{}
-	yggOptimal := map[string]*CochMetric{}
+	storageOptimal := map[string]*CochMetric{}
 	vmOptimal := map[string]*CochMetric{}
 	numInvalid := 0
 
@@ -110,15 +142,19 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]*Coc
 		lines := getLines(cf, cft)
 		switch cft {
 		case "DIFF_CONFIGURATION":
+			bCount, sCount, vCount, avg := countMetric(lines)
 			diff := &CochMetric{
 				Timestamp:     int(getBucketValue(getBuckets(cf, "TIMESTAMP")[0]).(float64)),
 				Lines:         lines,
-				Metric:        avgLinesMetric(lines),
+				Metric:        avg,
+				BothCount:     bCount,
+				StorageCount:  sCount,
+				VMCount:       vCount,
 				ConfigFileIDs: sids,
 			}
 			diffs = append(diffs, diff)
-		case "YGGDRASIL_OPTIMAL_CONFIGURATION":
-			yggOptimal[cfid] = &CochMetric{
+		case "STORAGE_OPTIMAL_CONFIGURATION":
+			storageOptimal[cfid] = &CochMetric{
 				Timestamp:     int(getBucketValue(getBuckets(cf, "TIMESTAMP")[0]).(float64)),
 				Lines:         lines,
 				Metric:        0,
@@ -134,24 +170,24 @@ func ParseToCochMetric(jsonBlob []byte, delimiter string, numLabels int) ([]*Coc
 		}
 	}
 
-	optimals := mergeOptimals(vmOptimal, yggOptimal, delimiter)
+	optimals := mergeOptimals(vmOptimal, storageOptimal, delimiter)
 
 	return diffs, optimals, numInvalid
 }
 
-func mergeOptimals(vmOptimal, yggOptimal map[string]*CochMetric, delimiter string) []*CochMetric {
+func mergeOptimals(vmOptimal, storageOptimal map[string]*CochMetric, delimiter string) []*CochMetric {
 	hostnameIndex := 3
 	optimals := []*CochMetric{}
 	for _, vm := range vmOptimal {
 		cfids := make([]string, len(vm.ConfigFileIDs))
 		copy(cfids, vm.ConfigFileIDs)
 		cfids[hostnameIndex] = "optimal"
-		yggCfid := strings.Join(cfids, delimiter)
+		storageCfid := strings.Join(cfids, delimiter)
 
-		if yggOptimal[yggCfid] != nil {
-			vm.Metric = calcOptimalMetric(vm.Lines, yggOptimal[yggCfid].Lines)
+		if storageOptimal[storageCfid] != nil {
+			vm.BothCount, vm.StorageCount, vm.VMCount, vm.Metric = calcOptimalMetric(vm.Lines, storageOptimal[storageCfid].Lines)
 		} else {
-			vm.Metric = 1
+			vm.BothCount, vm.StorageCount, vm.VMCount, vm.Metric = 0, 0, float64(len(vm.Lines)), 1
 		}
 
 		optimals = append(optimals, vm)
@@ -160,19 +196,29 @@ func mergeOptimals(vmOptimal, yggOptimal map[string]*CochMetric, delimiter strin
 	return optimals
 }
 
-func calcOptimalMetric(vmLines, yggLines []CochConfigFileLine) float64 {
+func calcOptimalMetric(vmLines, storageLines []CochConfigFileLine) (float64, float64, float64, float64) {
 	kvt := map[string]float64{}
 
-	for _, v := range append(vmLines, yggLines...) {
+	for _, v := range append(vmLines, storageLines...) {
 		kvt[v.KeyValueType] = kvt[v.KeyValueType] + v.Metric
 	}
 
-	sum := 0.0
+	var bothCount, storageCount, vmCount, avg, sum float64
 	for _, m := range kvt {
 		sum = sum + m
+
+		switch m {
+		case 1:
+			vmCount = vmCount + 1
+		case 1000:
+			storageCount = storageCount + 1
+		case 1001:
+			bothCount = bothCount + 1
+		}
 	}
 
-	return sum / float64(len(kvt))
+	avg = sum / float64(len(kvt))
+	return bothCount, storageCount, vmCount, avg
 }
 
 func configFileType(labels []string) string {
@@ -180,7 +226,7 @@ func configFileType(labels []string) string {
 	if strings.Contains(labels[1], "optimal") {
 		if labels[hostnameIndex] == "optimal" {
 			// "project-a", "terraform-module--optimal", "v1_4_7", "optimal", "ansible-xyz", "-etc-another-config-conf"
-			return "YGGDRASIL_OPTIMAL_CONFIGURATION"
+			return "STORAGE_OPTIMAL_CONFIGURATION"
 		}
 		// "project-a", "terraform-module--optimal", "v1_4_7", "project-a-pilot-01", "ansible-xyz", "-etc-another-config-conf"
 		return "VM_OPTIMAL_CONFIGURATION"
