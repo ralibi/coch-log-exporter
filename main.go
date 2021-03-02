@@ -20,7 +20,7 @@ var (
 	indexList     = flag.String("index-list", "index-1-*, index-2-*", "Elasticsearch index")
 	componentList = flag.String("component-list", "component-1, component-2, component-3", "List of components")
 	delimiter     = flag.String("delimiter", "__", "Config file id delimiter.")
-	interval      = flag.Int("interval", 2, "Request to Elasticsearch url interval in second")
+	interval      = flag.Int("interval", 10, "Request to Elasticsearch url interval in second")
 	labels        = flag.String("labels", "label_1, label_2, label_3, label_4, label_5, label_6", "The labels that will be exported.")
 	numLabels     = len(strings.Split(*labels, ","))
 )
