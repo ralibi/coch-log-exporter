@@ -31,12 +31,26 @@ type CochBucketMetric struct {
 }
 
 func (cm *CochMetric) AggregatedMetric() float64 {
+	ds := diffStatus(cm.Metric) * math.Pow(10, 12)
 	bc := cm.BothCount * math.Pow(10, 9)
 	sc := cm.StorageCount * math.Pow(10, 6)
 	vc := cm.VMCount * math.Pow(10, 3)
 	mt := cm.Metric / 10.0
 
-	return bc + sc + vc + mt
+	return ds + bc + sc + vc + mt
+}
+
+func diffStatus(m float64) float64 {
+	switch m {
+	case 1:
+		return 2
+	case 1000:
+		return 3
+	case 1001:
+		return 4
+	default:
+		return 1
+	}
 }
 
 func splitConfigFileID(name, delimiter string, numLabels int) ([]string, error) {

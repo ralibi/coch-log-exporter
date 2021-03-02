@@ -13,12 +13,12 @@ import (
 
 func TestAggregatedMetric(t *testing.T) {
 	cm := &CochMetric{
-		Metric: 875.625,
-		BothCount: 15,
+		Metric:       875.625,
+		BothCount:    15,
 		StorageCount: 3,
-		VMCount: 0,
+		VMCount:      0,
 	}
-	want := 15003000087.5625
+	want := 1015003000087.5625
 	got := cm.AggregatedMetric()
 	assert.Equal(t, got, want)
 }
@@ -28,6 +28,17 @@ func TestSplitConfigFileID(t *testing.T) {
 	want := []string{"project-a", "module-json", "service-json", "ansible-json", "v1_0_1", "-opt-config-json"}
 	got, _ := splitConfigFileID(n, "__", 6)
 	assert.Equal(t, got, want)
+}
+
+func TestDiffStatus(t *testing.T) {
+	ms := []float64{1, 1.0, 1.6, 500, 88.88, 1000.0, 1000.0001, 1001}
+	wants := []float64{2, 2, 1, 1, 1, 3, 1, 4}
+	for i, m := range ms {
+		t.Run(fmt.Sprintf("Should got correct diff status for %v", m), func(t *testing.T) {
+			got := diffStatus(m)
+			assert.Equal(t, got, wants[i])
+		})
+	}
 }
 
 func TestParseToCochMetric(t *testing.T) {
